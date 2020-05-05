@@ -69,7 +69,8 @@ def main():
         listener = Motion_Control_Listener(Mouse)
         print("Using motion mode...")
     elif pan_mode:  # Pan control mode
-        listener = Pan_Control_Listener(Mouse)
+        listener = Pan_Control_Listener(
+            Mouse, smooth_aggressiveness=smooth_aggressiveness, smooth_falloff=smooth_falloff)
         print("Using pan control")
 
     controller = Leap.Controller()  # Get a Leap controller
