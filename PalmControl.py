@@ -14,7 +14,7 @@ class Palm_Control_Listener(Leap.Listener):  #The Listener that we attach to the
         super(Palm_Control_Listener, self).__init__()  #Initialize like a normal listener
         #Initialize a bunch of stuff specific to this implementation
         self.cursor = mouse.relative_cursor()  #The cursor object that lets us control mice cross-platform
-        self.gesture_debouncer = n_state_debouncer(5,3)  #A signal debouncer that ensures a reliable, non-jumpy gesture detection
+        self.gesture_debouncer = n_state_debouncer(1,2)  #A signal debouncer that ensures a reliable, non-jumpy gesture detection
 
     def on_init(self, controller):
         print ("Initialized")
