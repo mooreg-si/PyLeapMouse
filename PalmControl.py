@@ -53,9 +53,7 @@ class Palm_Control_Listener(Leap.Listener):  #The Listener that we attach to the
     def do_gesture_recognition(self, gesture_hand, mouse_hand):
         #store only the extended fingers
         extended_finger_list = gesture_hand.fingers.extended()
-        if len(extended_finger_list) == 2:  #Two open fingers on gesture hand (scroll mode)
-            self.gesture_debouncer.signal(2)  #Tell the debouncer we've seen this gesture
-        elif len(extended_finger_list) == 1:  #One open finger on gesture hand (click down)
+        if len(extended_finger_list) == 0:  #One open finger on gesture hand (click down)
             self.gesture_debouncer.signal(1)
         else:  #No open fingers or 3+ open fingers (click up/no action)
             self.gesture_debouncer.signal(0)
