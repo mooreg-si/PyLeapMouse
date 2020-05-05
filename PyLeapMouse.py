@@ -7,20 +7,20 @@ from FingerControl import Finger_Control_Listener  #For finger-pointing control
 from MotionControl import Motion_Control_Listener  #For motion control
 
 def show_help():
-    print "----------------------------------PyLeapMouse----------------------------------"
-    print "Use --finger (or blank) for pointer finger control, and --palm for palm control."
-    print "Set smooth aggressiveness (# samples) with \"--smooth-aggressiveness [# samples]\""
-    print "Set smooth falloff with \"--smooth-falloff [% per sample]\""
-    print "Read README.md for even more info.\n"
+    print ("----------------------------------PyLeapMouse----------------------------------")
+    print ("Use --finger (or blank) for pointer finger control, and --palm for palm control.")
+    print ("Set smooth aggressiveness (# samples) with \"--smooth-aggressiveness [# samples]\"")
+    print ("Set smooth falloff with \"--smooth-falloff [% per sample]\"")
+    print ("Read README.md for even more info.\n")
 
 def main():
     if "-h" in sys.argv or "--help" in sys.argv:
         show_help()
         return
 
-    print "----------------------------------PyLeapMouse----------------------------------"
-    print "Use --finger (or blank) for pointer finger control, and --palm for palm control."
-    print "Use -h or --help for more info.\n"
+    print ("----------------------------------PyLeapMouse----------------------------------")
+    print ("Use --finger (or blank) for pointer finger control, and --palm for palm control.")
+    print ("Use -h or --help for more info.\n")
 
     #Default
     finger_mode = True
@@ -49,22 +49,22 @@ def main():
     #Create a custom listener object which controls the mouse
     if finger_mode:  #Finger pointer mode
         listener = Finger_Control_Listener(Mouse, smooth_aggressiveness=smooth_aggressiveness, smooth_falloff=smooth_falloff)
-        print "Using finger mode..."
+        print ("Using finger mode...")
     elif palm_mode:  #Palm control mode
         listener = Palm_Control_Listener(Mouse)
-        print "Using palm mode..."
+        print ("Using palm mode...")
     elif motion_mode:  #Motion control mode
         listener = Motion_Control_Listener(Mouse)
-        print "Using motion mode..."
+        print ("Using motion mode...")
 
 
     controller = Leap.Controller()  #Get a Leap controller
     controller.set_policy_flags(Leap.Controller.POLICY_BACKGROUND_FRAMES)
-    print "Adding Listener."
+    print ("Adding Listener.")
     controller.add_listener(listener)  #Attach the listener
 
     #Keep this process running until Enter is pressed
-    print "Press Enter to quit..."
+    print ("Press Enter to quit...")
     sys.stdin.readline()
     #Remove the sample listener when done
     controller.remove_listener(listener)

@@ -17,16 +17,16 @@ class Palm_Control_Listener(Leap.Listener):  #The Listener that we attach to the
         self.gesture_debouncer = n_state_debouncer(5,3)  #A signal debouncer that ensures a reliable, non-jumpy gesture detection
 
     def on_init(self, controller):
-        print "Initialized"
+        print ("Initialized")
 
     def on_connect(self, controller):
-        print "Connected"
+        print ("Connected")
 
     def on_disconnect(self, controller):
-        print "Disconnected"
+        print ("Disconnected")
 
     def on_exit(self, controller):
-        print "Exited"
+        print ("Exited")
 
     def on_frame(self, controller):
         frame = controller.frame()  #Grab the latest 3D data
@@ -35,8 +35,8 @@ class Palm_Control_Listener(Leap.Listener):  #The Listener that we attach to the
             if len(frame.hands) < 2:  #Just one hand
                 self.do_mouse_stuff(frame.hands[0])  #If there's only one hand, we assume it's to be used for mouse control
             else:  #Multiple hands. We have a right AND a left
-                rightmost_hand = max(frame.hands, key=lambda hand: hand.palm_position.x)  #Get rightmost hand
-                leftmost_hand = min(frame.hands, key=lambda hand: hand.palm_position.x)  #Get leftmost hand
+                rightmost_hand =frame.hands.rightmost  #Get rightmost hand
+                leftmost_hand = frame.hands.leftmost  #Get leftmost hand
                 self.do_gesture_recognition(leftmost_hand, rightmost_hand)  #This will run with >1 hands in frame
 
     def do_mouse_stuff(self, hand):  #Take a hand and use it as a mouse
@@ -51,9 +51,11 @@ class Palm_Control_Listener(Leap.Listener):  #The Listener that we attach to the
     #The mouse hand gives extra data (if applicable)
     #Like scroll speed/direction
     def do_gesture_recognition(self, gesture_hand, mouse_hand):
-        if len(gesture_hand.fingers) == 2:  #Two open fingers on gesture hand (scroll mode)
+        #store only the extended fingers
+        extended_finger_list = gesture_hand.fingers.extended()
+        if len(extended_finger_list) == 2:  #Two open fingers on gesture hand (scroll mode)
             self.gesture_debouncer.signal(2)  #Tell the debouncer we've seen this gesture
-        elif len(gesture_hand.fingers) == 1:  #One open finger on gesture hand (click down)
+        elif len(extended_finger_list) == 1:  #One open finger on gesture hand (click down)
             self.gesture_debouncer.signal(1)
         else:  #No open fingers or 3+ open fingers (click up/no action)
             self.gesture_debouncer.signal(0)
