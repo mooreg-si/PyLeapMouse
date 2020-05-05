@@ -29,3 +29,6 @@ var
 .cleanup.sh
 .installed.cfg
 pip-log.txt
+Windows/x64/
+Windows/x86/
+Windows/Leap.lib
