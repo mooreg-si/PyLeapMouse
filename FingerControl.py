@@ -21,16 +21,16 @@ class Finger_Control_Listener(Leap.Listener):  #The Listener that we attach to t
         self.most_recent_pointer_finger_id = None  #This holds the ID of the most recently used pointing finger, to prevent annoying switching
 
     def on_init(self, controller):
-        print "Initialized"
+        print ("Initialized")
 
     def on_connect(self, controller):
-        print "Connected"
+        print ("Connected")
 
     def on_disconnect(self, controller):
-        print "Disconnected"
+        print ("Disconnected")
 
     def on_exit(self, controller):
-        print "Exited"
+        print ("Exited")
 
     def on_frame(self, controller):
         frame = controller.frame()  #Grab the latest 3D data
@@ -39,7 +39,7 @@ class Finger_Control_Listener(Leap.Listener):  #The Listener that we attach to t
         interactionBox = frame.interaction_box
         normalizedPosition = interactionBox.normalize_point(stabilizedPosition)
         if finger.touch_zone > 0:
-            finger_count = len(frame.fingers)
+            finger_count = len(frame.fingers.extended())
             if finger.touch_zone == 1:
                 self.cursor.set_left_button_pressed(False)
                 if finger_count < 5:
@@ -50,7 +50,7 @@ class Finger_Control_Listener(Leap.Listener):  #The Listener that we attach to t
                     y_scroll = self.velocity_to_scroll_amount(finger_velocity.y)
                     self.cursor.scroll(x_scroll, y_scroll)
                 else:
-                    print "Finger count: %s" % finger_count
+                    print ("Finger count: %s") % finger_count
             elif finger.touch_zone == 2:
                 if finger_count == 1:
                     self.cursor.set_left_button_pressed(True)
@@ -104,7 +104,7 @@ class Finger_Control_Listener(Leap.Listener):  #The Listener that we attach to t
                     if self.cursor.left_button_pressed != self.mouse_button_debouncer.state:  #We need to push/unpush the cursor's button
                         self.cursor.set_left_button_pressed(self.mouse_button_debouncer.state)  #Set the cursor to click/not click
             except Exception as e:
-                print e
+                print (e)
 
     def select_pointer_finger(self, possible_fingers):  #Choose the best pointer finger
         sorted_fingers = sort_fingers_by_distance_from_screen(possible_fingers)  #Prioritize fingers by distance from screen
